@@ -10,7 +10,7 @@ use serde::Deserialize;
 use crate::core::beamlattice::BeamLattice;
 use crate::core::triangle_set::TriangleSets;
 use crate::threemf_namespaces::BEAM_LATTICE_NS;
-use crate::threemf_namespaces::{CORE_NS, CORE_TRIANGLESET_NS};
+use crate::threemf_namespaces::{CORE_NS, CORE_TRIANGLESET_NS, SLIC3RPE_NS};
 
 /// A triangle mesh
 ///
@@ -183,6 +183,34 @@ pub struct Triangle {
         xml(attribute)
     )]
     pub pid: Option<usize>,
+
+    /// Prusa color paint
+    #[cfg_attr(
+        any(feature = "write", feature = "memory-optimized-read"),
+        xml(ns(SLIC3RPE_NS), attribute)
+    )]
+    pub mmu_segmentation: Option<String>,
+
+    /// Prusa color paint
+    #[cfg_attr(
+        any(feature = "write", feature = "memory-optimized-read"),
+        xml(ns(SLIC3RPE_NS), attribute)
+    )]
+    pub custom_seam: Option<String>,
+
+    // Bambu color paint
+    #[cfg_attr(
+        any(feature = "write", feature = "memory-optimized-read"),
+        xml(attribute)
+    )]
+    pub paint_color: Option<String>,
+
+    // Bambu seam paint
+    #[cfg_attr(
+        any(feature = "write", feature = "memory-optimized-read"),
+        xml(attribute)
+    )]
+    pub paint_seam: Option<String>,
 }
 
 #[cfg(feature = "write")]
@@ -246,6 +274,10 @@ mod write_tests {
             p2: None,
             p3: None,
             pid: None,
+            mmu_segmentation: None,
+            custom_seam: None,
+            paint_color: None,
+            paint_seam: None,
         };
         let triangle_string = to_string(&triangle).unwrap();
 
@@ -268,6 +300,10 @@ mod write_tests {
                     p2: None,
                     p3: None,
                     pid: None,
+                    mmu_segmentation: None,
+                    custom_seam: None,
+                    paint_color: None,
+                    paint_seam: None,
                 },
                 Triangle {
                     v1: 2,
@@ -277,6 +313,10 @@ mod write_tests {
                     p2: None,
                     p3: None,
                     pid: None,
+                    mmu_segmentation: None,
+                    custom_seam: None,
+                    paint_color: None,
+                    paint_seam: None,
                 },
             ],
         };
@@ -330,6 +370,10 @@ mod write_tests {
                         p2: None,
                         p3: None,
                         pid: None,
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                     Triangle {
                         v1: 0,
@@ -339,6 +383,10 @@ mod write_tests {
                         p2: None,
                         p3: None,
                         pid: None,
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                 ],
             },
@@ -418,6 +466,10 @@ mod memory_optimized_read_tests {
                 p2: None,
                 p3: None,
                 pid: None,
+                mmu_segmentation: None,
+                custom_seam: None,
+                paint_color: None,
+                paint_seam: None,
             }
         );
     }
@@ -442,6 +494,10 @@ mod memory_optimized_read_tests {
                         p2: None,
                         p3: None,
                         pid: None,
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                     Triangle {
                         v1: 2,
@@ -451,6 +507,10 @@ mod memory_optimized_read_tests {
                         p2: None,
                         p3: None,
                         pid: None,
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                 ],
             }
@@ -502,6 +562,10 @@ mod memory_optimized_read_tests {
                             p2: None,
                             p3: None,
                             pid: None,
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         },
                         Triangle {
                             v1: 0,
@@ -511,6 +575,10 @@ mod memory_optimized_read_tests {
                             p2: None,
                             p3: None,
                             pid: None,
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         }
                     ]
                 },
@@ -588,6 +656,10 @@ mod speed_optimized_read_tests {
                 p2: None,
                 p3: None,
                 pid: None,
+                mmu_segmentation: None,
+                custom_seam: None,
+                paint_color: None,
+                paint_seam: None,
             }
         );
     }
@@ -612,6 +684,10 @@ mod speed_optimized_read_tests {
                         p2: None,
                         p3: None,
                         pid: None,
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                     Triangle {
                         v1: 2,
@@ -621,6 +697,10 @@ mod speed_optimized_read_tests {
                         p2: None,
                         p3: None,
                         pid: None,
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                 ],
             }
@@ -672,6 +752,10 @@ mod speed_optimized_read_tests {
                             p2: None,
                             p3: None,
                             pid: None,
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         },
                         Triangle {
                             v1: 0,
@@ -681,6 +765,10 @@ mod speed_optimized_read_tests {
                             p2: None,
                             p3: None,
                             pid: None,
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         }
                     ]
                 },

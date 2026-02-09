@@ -241,6 +241,10 @@ mod write_tests {
                         p2: None,
                         p3: None,
                         pid: None,
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                     Triangle {
                         v1: 0,
@@ -250,6 +254,10 @@ mod write_tests {
                         p2: None,
                         p3: None,
                         pid: None,
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                 ],
             },
@@ -394,6 +402,10 @@ mod memory_optimized_read_tests {
                             p2: None,
                             p3: None,
                             pid: None,
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         },
                         Triangle {
                             v1: 0,
@@ -403,6 +415,10 @@ mod memory_optimized_read_tests {
                             p2: None,
                             p3: None,
                             pid: None,
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         }
                     ]
                 },
@@ -546,6 +562,10 @@ mod speed_optimized_read_tests {
                             p2: None,
                             p3: None,
                             pid: None,
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         },
                         Triangle {
                             v1: 0,
@@ -555,6 +575,10 @@ mod speed_optimized_read_tests {
                             p2: None,
                             p3: None,
                             pid: None,
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         }
                     ]
                 },

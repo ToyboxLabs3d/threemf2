@@ -1288,6 +1288,11 @@ impl MeshBuilder {
         self
     }
 
+    pub fn append_vertices(&mut self, vertices: Vec<Vertex>) -> &mut Self {
+        self.vertices.extend(vertices);
+        self
+    }
+
     /// Add vertices from a flattened coordinate array.
     ///
     /// The slice should contain coordinate values in sequence: `[x0, y0, z0, x1, y1, z1, ...]`.
@@ -1340,7 +1345,21 @@ impl MeshBuilder {
             p2: None,
             p3: None,
             pid: None,
+            mmu_segmentation: None,
+            custom_seam: None,
+            paint_color: None,
+            paint_seam: None,
         });
+        self
+    }
+
+    pub fn push_triangle(&mut self, triangle: Triangle) -> &mut Self {
+        self.triangles.push(triangle);
+        self
+    }
+
+    pub fn append_triangles(&mut self, triangles: Vec<Triangle>) -> &mut Self {
+        self.triangles.extend(triangles);
         self
     }
 
@@ -1388,6 +1407,10 @@ impl MeshBuilder {
                 p2: None,
                 p3: None,
                 pid: None,
+                mmu_segmentation: None,
+                custom_seam: None,
+                paint_color: None,
+                paint_seam: None,
             });
         }
 
