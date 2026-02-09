@@ -11,7 +11,7 @@ use crate::core::beamlattice::BeamLattice;
 use crate::core::triangle_set::TriangleSets;
 use crate::core::types::{Double, OptionalResourceId, OptionalResourceIndex, ResourceIndex};
 use crate::threemf_namespaces::BEAM_LATTICE_NS;
-use crate::threemf_namespaces::{CORE_NS, CORE_TRIANGLESET_NS};
+use crate::threemf_namespaces::{CORE_NS, CORE_TRIANGLESET_NS, SLIC3RPE_NS};
 
 #[cfg(feature = "memory-optimized-read")]
 const MAX_VERTEX_BUFFER: usize = 100_000;
@@ -345,6 +345,22 @@ pub struct Triangle {
         )
     )]
     pub pid: OptionalResourceId,
+    
+    /// Prusa color paint segmentation.
+    #[cfg_attr(feature = "write", xml(ns(SLIC3RPE_NS), attribute))]
+    pub mmu_segmentation: Option<String>,
+    
+    /// Prusa seam paint.
+    #[cfg_attr(feature = "write", xml(ns(SLIC3RPE_NS), attribute))]
+    pub custom_seam: Option<String>,
+    
+    /// Bambu color paint.
+    #[cfg_attr(feature = "write", xml(attribute))]
+    pub paint_color: Option<String>,
+    
+    /// Bambu seam paint.
+    #[cfg_attr(feature = "write", xml(attribute))]
+    pub paint_seam: Option<String>,
 }
 
 #[cfg(feature = "memory-optimized-read")]
@@ -370,6 +386,10 @@ impl<'xml> FromXml<'xml> for Triangle {
         let mut p2: OptionalResourceIndex = OptionalResourceIndex::none();
         let mut p3: OptionalResourceIndex = OptionalResourceIndex::none();
         let mut pid: OptionalResourceId = OptionalResourceId::none();
+        let mut mmu_segmentation: Option<String> = None;
+        let mut custom_seam: Option<String> = None;
+        let mut paint_color: Option<String> = None;
+        let mut paint_seam: Option<String> = None;
 
         while let Some(node) = deserializer.next() {
             let node = node?;
@@ -378,9 +398,15 @@ impl<'xml> FromXml<'xml> for Triangle {
                     let id = deserializer.attribute_id(&attr)?;
 
                     match id.name {
-                        "v1" => v1 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default(),
-                        "v2" => v2 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default(),
-                        "v3" => v3 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default(),
+                        "v1" => {
+                            v1 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default()
+                        }
+                        "v2" => {
+                            v2 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default()
+                        }
+                        "v3" => {
+                            v3 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default()
+                        }
                         "p1" => {
                             if let Ok(value) = lexical_core::parse(attr.value.as_bytes()) {
                                 p1 = OptionalResourceIndex::new(value);
@@ -400,6 +426,18 @@ impl<'xml> FromXml<'xml> for Triangle {
                             if let Ok(value) = lexical_core::parse(attr.value.as_bytes()) {
                                 pid = OptionalResourceId::new(value);
                             }
+                        }
+                        "mmu_segmentation" => {
+                            mmu_segmentation = Some(attr.value.to_string());
+                        }
+                        "custom_seam" => {
+                            custom_seam = Some(attr.value.to_string());
+                        }
+                        "paint_color" => {
+                            paint_color = Some(attr.value.to_string());
+                        }
+                        "paint_seam" => {
+                            paint_seam = Some(attr.value.to_string());
                         }
                         _ => {}
                     };
@@ -423,6 +461,10 @@ impl<'xml> FromXml<'xml> for Triangle {
             p2,
             p3,
             pid,
+            mmu_segmentation,
+            custom_seam,
+            paint_color,
+            paint_seam,
         });
         Ok(())
     }
@@ -483,6 +525,10 @@ mod write_tests {
             p2: OptionalResourceIndex::none(),
             p3: OptionalResourceIndex::none(),
             pid: OptionalResourceId::none(),
+            mmu_segmentation: None,
+            custom_seam: None,
+            paint_color: None,
+            paint_seam: None,
         };
         let triangle_string = to_string(&triangle).unwrap();
 
@@ -505,6 +551,10 @@ mod write_tests {
                     p2: OptionalResourceIndex::none(),
                     p3: OptionalResourceIndex::none(),
                     pid: OptionalResourceId::none(),
+                    mmu_segmentation: None,
+                    custom_seam: None,
+                    paint_color: None,
+                    paint_seam: None,
                 },
                 Triangle {
                     v1: 2,
@@ -514,6 +564,10 @@ mod write_tests {
                     p2: OptionalResourceIndex::none(),
                     p3: OptionalResourceIndex::none(),
                     pid: OptionalResourceId::none(),
+                    mmu_segmentation: None,
+                    custom_seam: None,
+                    paint_color: None,
+                    paint_seam: None,
                 },
             ],
         };
@@ -551,6 +605,10 @@ mod write_tests {
                         p2: OptionalResourceIndex::none(),
                         p3: OptionalResourceIndex::none(),
                         pid: OptionalResourceId::none(),
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                     Triangle {
                         v1: 0,
@@ -560,6 +618,10 @@ mod write_tests {
                         p2: OptionalResourceIndex::none(),
                         p3: OptionalResourceIndex::none(),
                         pid: OptionalResourceId::none(),
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                 ],
             },
@@ -625,6 +687,10 @@ mod memory_optimized_read_tests {
                 p2: OptionalResourceIndex::none(),
                 p3: OptionalResourceIndex::none(),
                 pid: OptionalResourceId::none(),
+                mmu_segmentation: None,
+                custom_seam: None,
+                paint_color: None,
+                paint_seam: None,
             }
         );
     }
@@ -649,6 +715,10 @@ mod memory_optimized_read_tests {
                         p2: OptionalResourceIndex::none(),
                         p3: OptionalResourceIndex::none(),
                         pid: OptionalResourceId::none(),
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                     Triangle {
                         v1: 2,
@@ -658,6 +728,10 @@ mod memory_optimized_read_tests {
                         p2: OptionalResourceIndex::none(),
                         p3: OptionalResourceIndex::none(),
                         pid: OptionalResourceId::none(),
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                 ],
             }
@@ -693,6 +767,10 @@ mod memory_optimized_read_tests {
                             p2: OptionalResourceIndex::none(),
                             p3: OptionalResourceIndex::none(),
                             pid: OptionalResourceId::none(),
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         },
                         Triangle {
                             v1: 0,
@@ -702,6 +780,10 @@ mod memory_optimized_read_tests {
                             p2: OptionalResourceIndex::none(),
                             p3: OptionalResourceIndex::none(),
                             pid: OptionalResourceId::none(),
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         }
                     ]
                 },
@@ -767,6 +849,10 @@ mod speed_optimized_read_tests {
                 p2: OptionalResourceIndex::none(),
                 p3: OptionalResourceIndex::none(),
                 pid: OptionalResourceId::none(),
+                mmu_segmentation: None,
+                custom_seam: None,
+                paint_color: None,
+                paint_seam: None,
             }
         );
     }
@@ -791,6 +877,10 @@ mod speed_optimized_read_tests {
                         p2: OptionalResourceIndex::none(),
                         p3: OptionalResourceIndex::none(),
                         pid: OptionalResourceId::none(),
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                     Triangle {
                         v1: 2,
@@ -800,6 +890,10 @@ mod speed_optimized_read_tests {
                         p2: OptionalResourceIndex::none(),
                         p3: OptionalResourceIndex::none(),
                         pid: OptionalResourceId::none(),
+                        mmu_segmentation: None,
+                        custom_seam: None,
+                        paint_color: None,
+                        paint_seam: None,
                     },
                 ],
             }
@@ -835,6 +929,10 @@ mod speed_optimized_read_tests {
                             p2: OptionalResourceIndex::none(),
                             p3: OptionalResourceIndex::none(),
                             pid: OptionalResourceId::none(),
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         },
                         Triangle {
                             v1: 0,
@@ -844,6 +942,10 @@ mod speed_optimized_read_tests {
                             p2: OptionalResourceIndex::none(),
                             p3: OptionalResourceIndex::none(),
                             pid: OptionalResourceId::none(),
+                            mmu_segmentation: None,
+                            custom_seam: None,
+                            paint_color: None,
+                            paint_seam: None,
                         }
                     ]
                 },

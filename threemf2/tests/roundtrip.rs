@@ -47,6 +47,10 @@ mod tests {
                 p2: OptionalResourceIndex::none(),
                 p3: OptionalResourceIndex::none(),
                 pid: OptionalResourceId::none(),
+                mmu_segmentation: None,
+                custom_seam: None,
+                paint_color: None,
+                paint_seam: None,
             }],
         };
 
