@@ -1,6 +1,8 @@
 use zip::ZipWriter;
 use zip::write::SimpleFileOptions;
 
+pub type CompressionMethod = zip::CompressionMethod;
+
 #[cfg(feature = "io-write")]
 use instant_xml::ToXml;
 
@@ -66,6 +68,9 @@ pub struct ThreemfPackage {
     pub content_types: ContentTypes,
 
     namespaces: HashMap<String, Vec<XmlNamespace>>,
+
+    /// A threemf file is a zip archive. This controls the compression method used when writing the archive.
+    pub compression_method: CompressionMethod,
 }
 
 impl ThreemfPackage {
@@ -85,6 +90,7 @@ impl ThreemfPackage {
             relationships,
             content_types,
             namespaces: HashMap::new(),
+            compression_method: CompressionMethod::Deflated,
         }
     }
 
@@ -105,6 +111,7 @@ impl ThreemfPackage {
             relationships,
             content_types,
             namespaces,
+            compression_method: CompressionMethod::Deflated,
         }
     }
 }
@@ -122,10 +129,17 @@ impl ThreemfPackage {
             "[Content_Types].xml",
             &self.content_types,
             None,
+            self.compression_method,
         )?;
 
         for (path, relationships) in &self.relationships {
-            Self::archive_write_xml_with_header(&mut zip, path, &relationships, None)?;
+            Self::archive_write_xml_with_header(
+                &mut zip,
+                path,
+                &relationships,
+                None,
+                self.compression_method,
+            )?;
 
             for relationship in &relationships.relationships {
                 let filename = utils::try_strip_leading_slash(&relationship.target);
@@ -146,11 +160,16 @@ impl ThreemfPackage {
                             filename,
                             model,
                             Some(model.used_namespaces()),
+                            self.compression_method,
                         )?;
                     }
                     RelationshipType::Thumbnail => {
                         if let Some(image) = self.thumbnails.get(&relationship.target) {
-                            zip.start_file(filename, SimpleFileOptions::default())?;
+                            zip.start_file(
+                                filename,
+                                SimpleFileOptions::default()
+                                    .compression_method(self.compression_method),
+                            )?;
                             zip.write_all(&image.data)?;
                         } else {
                             return Err(Error::WriteError(format!(
@@ -161,7 +180,11 @@ impl ThreemfPackage {
                     }
                     RelationshipType::Unknown(_) => {
                         if let Some(bytes) = self.unknown_parts.get(&relationship.target) {
-                            zip.start_file(filename, SimpleFileOptions::default())?;
+                            zip.start_file(
+                                filename,
+                                SimpleFileOptions::default()
+                                    .compression_method(self.compression_method),
+                            )?;
                             zip.write_all(bytes)?;
                         } else {
                             return Err(Error::WriteError(format!(
@@ -182,6 +205,7 @@ impl ThreemfPackage {
         filename: &str,
         content: &T,
         optional_namespaces_to_keep: Option<Vec<ThreemfNamespace>>,
+        compression_method: CompressionMethod,
     ) -> Result<(), Error> {
         use instant_xml::to_string;
 
@@ -195,7 +219,10 @@ impl ThreemfPackage {
 
         content_string.insert_str(0, XML_HEADER);
 
-        archive.start_file(filename, SimpleFileOptions::default())?;
+        archive.start_file(
+            filename,
+            SimpleFileOptions::default().compression_method(compression_method),
+        )?;
         archive.write_all(content_string.as_bytes())?;
         Ok(())
     }
