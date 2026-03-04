@@ -38,6 +38,7 @@ mod zip_utils;
     feature = "io-speed-optimized-read"
 ))]
 mod threemf_package;
+pub use threemf_package::CompressionMethod;
 #[cfg(any(
     feature = "io-write",
     feature = "io-memory-optimized-read",
