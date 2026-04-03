@@ -8,7 +8,7 @@ use threemf2::{
     core::{
         OptionalResourceId,
         build::{Build, Item},
-        mesh::{Mesh, Triangle, Triangles, Vertex, Vertices},
+        mesh::{Mesh, Triangles, Vertex, Vertices},
         metadata::Preserve,
         model::{Model, Unit},
         object::{Object, ObjectKind, ObjectType},
@@ -23,7 +23,7 @@ use threemf2::{
 };
 
 mod validation_utils;
-use validation_utils::validation::{extract_model_xml, validate_or_panic};
+use validation_utils::validation::{extract_model_xml, triangle, validate_or_panic};
 
 const CORE_XSD: &str = include_str!("data/xsd/3mf-core-1.3.0.xsd");
 
@@ -41,42 +41,10 @@ fn validate_simple_mesh_against_core_xsd() {
 
     let triangles = Triangles {
         triangle: vec![
-            Triangle {
-                v1: 0,
-                v2: 1,
-                v3: 2,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 0,
-                v2: 2,
-                v3: 3,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 0,
-                v2: 1,
-                v3: 2,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 0,
-                v2: 1,
-                v3: 2,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
+            triangle(0, 1, 2),
+            triangle(0, 2, 3),
+            triangle(0, 1, 2),
+            triangle(0, 1, 2),
         ],
     };
 
@@ -175,42 +143,10 @@ fn validate_model_with_metadata_against_core_xsd() {
 
     let triangles = Triangles {
         triangle: vec![
-            Triangle {
-                v1: 0,
-                v2: 1,
-                v3: 2,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 0,
-                v2: 2,
-                v3: 3,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 1,
-                v2: 2,
-                v3: 3,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 1,
-                v2: 2,
-                v3: 3,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
+            triangle(0, 1, 2),
+            triangle(0, 2, 3),
+            triangle(1, 2, 3),
+            triangle(1, 2, 3),
         ],
     };
 
@@ -326,42 +262,10 @@ fn validate_model_with_different_units() {
 
         let triangles = Triangles {
             triangle: vec![
-                Triangle {
-                    v1: 0,
-                    v2: 1,
-                    v3: 2,
-                    p1: OptionalResourceIndex::none(),
-                    p2: OptionalResourceIndex::none(),
-                    p3: OptionalResourceIndex::none(),
-                    pid: OptionalResourceId::none(),
-                },
-                Triangle {
-                    v1: 0,
-                    v2: 2,
-                    v3: 3,
-                    p1: OptionalResourceIndex::none(),
-                    p2: OptionalResourceIndex::none(),
-                    p3: OptionalResourceIndex::none(),
-                    pid: OptionalResourceId::none(),
-                },
-                Triangle {
-                    v1: 0,
-                    v2: 1,
-                    v3: 2,
-                    p1: OptionalResourceIndex::none(),
-                    p2: OptionalResourceIndex::none(),
-                    p3: OptionalResourceIndex::none(),
-                    pid: OptionalResourceId::none(),
-                },
-                Triangle {
-                    v1: 0,
-                    v2: 2,
-                    v3: 3,
-                    p1: OptionalResourceIndex::none(),
-                    p2: OptionalResourceIndex::none(),
-                    p3: OptionalResourceIndex::none(),
-                    pid: OptionalResourceId::none(),
-                },
+                triangle(0, 1, 2),
+                triangle(0, 2, 3),
+                triangle(0, 1, 2),
+                triangle(0, 2, 3),
             ],
         };
 

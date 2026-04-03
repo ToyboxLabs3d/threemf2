@@ -43,6 +43,22 @@ fn create_cube_model() -> Model {
     use threemf2::core::resources::Resources;
     use threemf2::core::types::{OptionalResourceId, OptionalResourceIndex};
 
+    fn triangle(v1: u32, v2: u32, v3: u32) -> Triangle {
+        Triangle {
+            v1,
+            v2,
+            v3,
+            p1: OptionalResourceIndex::none(),
+            p2: OptionalResourceIndex::none(),
+            p3: OptionalResourceIndex::none(),
+            pid: OptionalResourceId::none(),
+            mmu_segmentation: None,
+            custom_seam: None,
+            paint_color: None,
+            paint_seam: None,
+        }
+    }
+
     // Define vertices for a cube
     let vertices = Vertices {
         vertex: vec![
@@ -61,119 +77,23 @@ fn create_cube_model() -> Model {
     let triangles = Triangles {
         triangle: vec![
             // Front face
-            Triangle {
-                v1: 0,
-                v2: 1,
-                v3: 2,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 0,
-                v2: 2,
-                v3: 3,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
+            triangle(0, 1, 2),
+            triangle(0, 2, 3),
             // Back face
-            Triangle {
-                v1: 5,
-                v2: 4,
-                v3: 7,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 5,
-                v2: 7,
-                v3: 6,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
+            triangle(5, 4, 7),
+            triangle(5, 7, 6),
             // Top face
-            Triangle {
-                v1: 3,
-                v2: 2,
-                v3: 6,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 3,
-                v2: 6,
-                v3: 7,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
+            triangle(3, 2, 6),
+            triangle(3, 6, 7),
             // Bottom face
-            Triangle {
-                v1: 4,
-                v2: 5,
-                v3: 1,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 4,
-                v2: 1,
-                v3: 0,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
+            triangle(4, 5, 1),
+            triangle(4, 1, 0),
             // Left face
-            Triangle {
-                v1: 4,
-                v2: 0,
-                v3: 3,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 4,
-                v2: 3,
-                v3: 7,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
+            triangle(4, 0, 3),
+            triangle(4, 3, 7),
             // Right face
-            Triangle {
-                v1: 1,
-                v2: 5,
-                v3: 6,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
-            Triangle {
-                v1: 1,
-                v2: 6,
-                v3: 2,
-                p1: OptionalResourceIndex::none(),
-                p2: OptionalResourceIndex::none(),
-                p3: OptionalResourceIndex::none(),
-                pid: OptionalResourceId::none(),
-            },
+            triangle(1, 5, 6),
+            triangle(1, 6, 2),
         ],
     };
 

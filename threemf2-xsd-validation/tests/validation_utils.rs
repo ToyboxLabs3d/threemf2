@@ -12,7 +12,24 @@ pub mod validation {
         },
     };
     use std::io::{Cursor, Read};
+    use threemf2::core::{OptionalResourceId, mesh::Triangle, types::OptionalResourceIndex};
     use zip::ZipArchive;
+
+    pub fn triangle(v1: u32, v2: u32, v3: u32) -> Triangle {
+        Triangle {
+            v1,
+            v2,
+            v3,
+            p1: OptionalResourceIndex::none(),
+            p2: OptionalResourceIndex::none(),
+            p3: OptionalResourceIndex::none(),
+            pid: OptionalResourceId::none(),
+            mmu_segmentation: None,
+            custom_seam: None,
+            paint_color: None,
+            paint_seam: None,
+        }
+    }
 
     /// Extract model XML from a 3MF package (ZIP archive)
     pub fn extract_model_xml(package_bytes: &[u8]) -> Result<String, String> {

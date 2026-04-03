@@ -345,19 +345,19 @@ pub struct Triangle {
         )
     )]
     pub pid: OptionalResourceId,
-    
+
     /// Prusa color paint segmentation.
     #[cfg_attr(feature = "write", xml(ns(SLIC3RPE_NS), attribute))]
     pub mmu_segmentation: Option<String>,
-    
+
     /// Prusa seam paint.
     #[cfg_attr(feature = "write", xml(ns(SLIC3RPE_NS), attribute))]
     pub custom_seam: Option<String>,
-    
+
     /// Bambu color paint.
     #[cfg_attr(feature = "write", xml(attribute))]
     pub paint_color: Option<String>,
-    
+
     /// Bambu seam paint.
     #[cfg_attr(feature = "write", xml(attribute))]
     pub paint_seam: Option<String>,
@@ -398,15 +398,9 @@ impl<'xml> FromXml<'xml> for Triangle {
                     let id = deserializer.attribute_id(&attr)?;
 
                     match id.name {
-                        "v1" => {
-                            v1 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default()
-                        }
-                        "v2" => {
-                            v2 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default()
-                        }
-                        "v3" => {
-                            v3 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default()
-                        }
+                        "v1" => v1 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default(),
+                        "v2" => v2 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default(),
+                        "v3" => v3 = lexical_core::parse(attr.value.as_bytes()).unwrap_or_default(),
                         "p1" => {
                             if let Ok(value) = lexical_core::parse(attr.value.as_bytes()) {
                                 p1 = OptionalResourceIndex::new(value);
