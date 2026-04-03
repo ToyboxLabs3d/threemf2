@@ -1418,6 +1418,11 @@ impl MeshBuilder {
         self
     }
 
+    pub fn append_vertices(&mut self, vertices: Vec<Vertex>) -> &mut Self {
+        self.vertices.extend(vertices);
+        self
+    }
+
     /// Add vertices from a flattened coordinate array.
     ///
     /// The slice should contain coordinate values in sequence: `[x0, y0, z0, x1, y1, z1, ...]`.
@@ -1472,6 +1477,16 @@ impl MeshBuilder {
             paint_color: None,
             paint_seam: None,
         });
+        self
+    }
+
+    pub fn push_triangle(&mut self, triangle: Triangle) -> &mut Self {
+        self.triangles.push(triangle);
+        self
+    }
+
+    pub fn append_triangles(&mut self, triangles: Vec<Triangle>) -> &mut Self {
+        self.triangles.extend(triangles);
         self
     }
 
@@ -1811,10 +1826,11 @@ impl ComponentsBuilder {
             }
         }
 
-        let all_object_exists = self
-            .components
-            .iter()
-            .all(|c| self.all_existing_object_ids.contains(&ObjectId(c.objectid)));
+        let all_object_exists = self.components.iter().all(|c| {
+            // If the component has a path, it references an external file,
+            // so we shouldn't enforce local object existence.
+            c.path.is_some() || self.all_existing_object_ids.contains(&ObjectId(c.objectid))
+        });
 
         if !all_object_exists {
             return Err(ComponentsObjectError::ObjectReferenceNotFoundForComponent);
