@@ -56,6 +56,8 @@ fn create_cube_model() -> Model {
             custom_seam: None,
             paint_color: None,
             paint_seam: None,
+            paint_fuzzy_skin: None,
+            paint_supports: None,
         }
     }
 

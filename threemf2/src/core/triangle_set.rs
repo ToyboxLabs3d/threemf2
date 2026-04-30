@@ -226,6 +226,8 @@ mod write_tests {
                         custom_seam: None,
                         paint_color: None,
                         paint_seam: None,
+                        paint_supports: None,
+                        paint_fuzzy_skin: None,
                     },
                     Triangle {
                         v1: 0,
@@ -239,6 +241,8 @@ mod write_tests {
                         custom_seam: None,
                         paint_color: None,
                         paint_seam: None,
+                        paint_supports: None,
+                        paint_fuzzy_skin: None,
                     },
                 ],
             },
@@ -368,6 +372,8 @@ mod memory_optimized_read_tests {
                             custom_seam: None,
                             paint_color: None,
                             paint_seam: None,
+                            paint_supports: None,
+                            paint_fuzzy_skin: None,
                         },
                         Triangle {
                             v1: 0,
@@ -381,6 +387,8 @@ mod memory_optimized_read_tests {
                             custom_seam: None,
                             paint_color: None,
                             paint_seam: None,
+                            paint_supports: None,
+                            paint_fuzzy_skin: None,
                         }
                     ]
                 },
@@ -509,6 +517,8 @@ mod speed_optimized_read_tests {
                             custom_seam: None,
                             paint_color: None,
                             paint_seam: None,
+                            paint_supports: None,
+                            paint_fuzzy_skin: None,
                         },
                         Triangle {
                             v1: 0,
@@ -522,6 +532,8 @@ mod speed_optimized_read_tests {
                             custom_seam: None,
                             paint_color: None,
                             paint_seam: None,
+                            paint_supports: None,
+                            paint_fuzzy_skin: None,
                         }
                     ]
                 },

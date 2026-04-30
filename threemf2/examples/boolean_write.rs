@@ -44,6 +44,8 @@ fn triangle(v1: u32, v2: u32, v3: u32) -> Triangle {
         custom_seam: None,
         paint_color: None,
         paint_seam: None,
+        paint_supports: None,
+        paint_fuzzy_skin: None,
     }
 }
 

@@ -361,6 +361,14 @@ pub struct Triangle {
     /// Bambu seam paint.
     #[cfg_attr(feature = "write", xml(attribute))]
     pub paint_seam: Option<String>,
+
+    /// Bambu support paint.
+    #[cfg_attr(feature = "write", xml(attribute))]
+    pub paint_supports: Option<String>,
+
+    /// Bambu fuzzy skin paint.
+    #[cfg_attr(feature = "write", xml(attribute))]
+    pub paint_fuzzy_skin: Option<String>,
 }
 
 #[cfg(feature = "memory-optimized-read")]
@@ -390,6 +398,8 @@ impl<'xml> FromXml<'xml> for Triangle {
         let mut custom_seam: Option<String> = None;
         let mut paint_color: Option<String> = None;
         let mut paint_seam: Option<String> = None;
+        let mut paint_supports: Option<String> = None;
+        let mut paint_fuzzy_skin: Option<String> = None;
 
         while let Some(node) = deserializer.next() {
             let node = node?;
@@ -433,6 +443,12 @@ impl<'xml> FromXml<'xml> for Triangle {
                         "paint_seam" => {
                             paint_seam = Some(attr.value.to_string());
                         }
+                        "paint_supports" => {
+                            paint_supports = Some(attr.value.to_string());
+                        }
+                        "paint_fuzzy_skin" => {
+                            paint_fuzzy_skin = Some(attr.value.to_string());
+                        }
                         _ => {}
                     };
                 }
@@ -459,6 +475,8 @@ impl<'xml> FromXml<'xml> for Triangle {
             custom_seam,
             paint_color,
             paint_seam,
+            paint_supports,
+            paint_fuzzy_skin,
         });
         Ok(())
     }
@@ -523,6 +541,8 @@ mod write_tests {
             custom_seam: None,
             paint_color: None,
             paint_seam: None,
+            paint_supports: None,
+            paint_fuzzy_skin: None,
         };
         let triangle_string = to_string(&triangle).unwrap();
 
@@ -549,6 +569,8 @@ mod write_tests {
                     custom_seam: None,
                     paint_color: None,
                     paint_seam: None,
+                    paint_supports: None,
+                    paint_fuzzy_skin: None,
                 },
                 Triangle {
                     v1: 2,
@@ -562,6 +584,8 @@ mod write_tests {
                     custom_seam: None,
                     paint_color: None,
                     paint_seam: None,
+                    paint_supports: None,
+                    paint_fuzzy_skin: None,
                 },
             ],
         };
@@ -603,6 +627,8 @@ mod write_tests {
                         custom_seam: None,
                         paint_color: None,
                         paint_seam: None,
+                        paint_supports: None,
+                        paint_fuzzy_skin: None,
                     },
                     Triangle {
                         v1: 0,
@@ -616,6 +642,8 @@ mod write_tests {
                         custom_seam: None,
                         paint_color: None,
                         paint_seam: None,
+                        paint_supports: None,
+                        paint_fuzzy_skin: None,
                     },
                 ],
             },
@@ -685,6 +713,8 @@ mod memory_optimized_read_tests {
                 custom_seam: None,
                 paint_color: None,
                 paint_seam: None,
+                paint_supports: None,
+                paint_fuzzy_skin: None,
             }
         );
     }
@@ -713,6 +743,8 @@ mod memory_optimized_read_tests {
                         custom_seam: None,
                         paint_color: None,
                         paint_seam: None,
+                        paint_supports: None,
+                        paint_fuzzy_skin: None,
                     },
                     Triangle {
                         v1: 2,
@@ -726,6 +758,8 @@ mod memory_optimized_read_tests {
                         custom_seam: None,
                         paint_color: None,
                         paint_seam: None,
+                        paint_supports: None,
+                        paint_fuzzy_skin: None,
                     },
                 ],
             }
@@ -765,6 +799,8 @@ mod memory_optimized_read_tests {
                             custom_seam: None,
                             paint_color: None,
                             paint_seam: None,
+                            paint_supports: None,
+                            paint_fuzzy_skin: None,
                         },
                         Triangle {
                             v1: 0,
@@ -778,6 +814,8 @@ mod memory_optimized_read_tests {
                             custom_seam: None,
                             paint_color: None,
                             paint_seam: None,
+                            paint_supports: None,
+                            paint_fuzzy_skin: None,
                         }
                     ]
                 },
@@ -847,6 +885,8 @@ mod speed_optimized_read_tests {
                 custom_seam: None,
                 paint_color: None,
                 paint_seam: None,
+                paint_supports: None,
+                paint_fuzzy_skin: None,
             }
         );
     }
@@ -875,6 +915,8 @@ mod speed_optimized_read_tests {
                         custom_seam: None,
                         paint_color: None,
                         paint_seam: None,
+                        paint_supports: None,
+                        paint_fuzzy_skin: None,
                     },
                     Triangle {
                         v1: 2,
@@ -888,6 +930,8 @@ mod speed_optimized_read_tests {
                         custom_seam: None,
                         paint_color: None,
                         paint_seam: None,
+                        paint_supports: None,
+                        paint_fuzzy_skin: None,
                     },
                 ],
             }
@@ -927,6 +971,8 @@ mod speed_optimized_read_tests {
                             custom_seam: None,
                             paint_color: None,
                             paint_seam: None,
+                            paint_supports: None,
+                            paint_fuzzy_skin: None,
                         },
                         Triangle {
                             v1: 0,
@@ -940,6 +986,8 @@ mod speed_optimized_read_tests {
                             custom_seam: None,
                             paint_color: None,
                             paint_seam: None,
+                            paint_supports: None,
+                            paint_fuzzy_skin: None,
                         }
                     ]
                 },

@@ -1476,6 +1476,8 @@ impl MeshBuilder {
             custom_seam: None,
             paint_color: None,
             paint_seam: None,
+            paint_supports: None,
+            paint_fuzzy_skin: None,
         });
         self
     }
@@ -1538,6 +1540,8 @@ impl MeshBuilder {
                 custom_seam: None,
                 paint_color: None,
                 paint_seam: None,
+                paint_supports: None,
+                paint_fuzzy_skin: None,
             });
         }
 
